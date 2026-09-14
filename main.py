@@ -8,7 +8,6 @@ import os
 import nest_asyncio
 import uvicorn
 from langdetect import detect
-from deep_translator import GoogleTranslator
 
 # Import custom RAG logic for handling constitutional queries
 from RAG_logic import setup_knowledge_base, query_constitution, generate_response
@@ -63,22 +62,12 @@ async def ask_question(request: Request):
         # Detect the language of the input question (e.g., English or Swahili)
         input_lang = detect(question)
 
-        # Translate the question to English if it's in Swahili for processing
-        translated_question = question
-        if input_lang == "sw":
-            translated_question = GoogleTranslator(source='sw', target='en').translate(question)
-
         # Query the Constitution knowledge base for relevant text chunks
-        relevant_chunks = query_constitution(translated_question)
+        relevant_chunks = query_constitution(question)
         context = "\n".join(relevant_chunks)
-        # Generate a response in English based on the query and context
-        answer_en = generate_response(translated_question, context)
-
-        # Translate the answer to Swahili if the input was in Swahili or the target language is Swahili
-        if language == "sw" or input_lang == "sw":
-            answer = GoogleTranslator(source='en', target='sw').translate(answer_en)
-        else:
-            answer = answer_en
+        # Generate the answer directly in the requested language.
+        response_language = "Swahili" if language == "sw" or input_lang == "sw" else "English"
+        answer = generate_response(question, context, response_language)
 
         # Return the answer in JSON format
         return {"answer": answer}

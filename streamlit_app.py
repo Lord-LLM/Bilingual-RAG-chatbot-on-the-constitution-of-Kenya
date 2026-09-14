@@ -2,7 +2,6 @@ import os
 from html import escape
 
 import streamlit as st
-from deep_translator import GoogleTranslator
 from langdetect import detect
 
 
@@ -261,18 +260,11 @@ if st.button("Ask", type="primary"):
             query_constitution, generate_response = load_rag_components()
             current_step = "detecting the question language"
             input_language = detect(question)
-            translated_question = question
-            if input_language == "sw":
-                current_step = "translating the question"
-                translated_question = GoogleTranslator(source="sw", target="en").translate(question)
 
             current_step = "searching the Constitution"
-            context = "\n".join(query_constitution(translated_question))
+            context = "\n".join(query_constitution(question))
             current_step = "generating the answer"
-            answer = generate_response(translated_question, context)
-            if language == "Swahili" or input_language == "sw":
-                current_step = "translating the answer"
-                answer = GoogleTranslator(source="en", target="sw").translate(answer)
+            answer = generate_response(question, context, language)
 
             st.markdown(
                 '<div class="response-heading"><strong>Response</strong>'

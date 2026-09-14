@@ -97,12 +97,14 @@ def query_constitution(query, n_results=5):
     return results['documents'][0]
 
 # Function to generate a response using Groq API based on the query and context
-def generate_response(query, context):
+def generate_response(query, context, response_language="English"):
     prompt = f"""
     You are a legal assistant specializing in the Kenyan Constitution. Based on the following context from the Kenyan Constitution, answer the query accurately and concisely. If the context is insufficient, indicate so and provide a general response based on your knowledge.
 
     Context:
     {context}
+
+    Respond in {response_language}. Keep the answer accurate, concise, and grounded in the provided context.
 
     Query:
     {query}
