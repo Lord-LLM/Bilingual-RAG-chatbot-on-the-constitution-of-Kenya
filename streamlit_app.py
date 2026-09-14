@@ -38,10 +38,29 @@ st.markdown(
             gap: 15px;
             padding: 20px 10px;
         }
-        .chatbot-header img {
+        .kenya-flag {
+            display: flex;
+            flex-direction: column;
             width: 64px;
             height: 50px;
-            object-fit: cover;
+            border: 1px solid #777;
+            flex: 0 0 auto;
+        }
+        .kenya-flag span {
+            flex: 1;
+        }
+        .flag-black { background: #000; }
+        .flag-white { background: #fff; }
+        .flag-red { background: #f00; }
+        .flag-green { background: green; }
+        .flag-shield {
+            position: relative;
+            margin: -18px auto;
+            width: 10px;
+            height: 35px;
+            background: #f00;
+            border: 2px solid #000;
+            border-radius: 50%;
         }
         .chatbot-header h1 {
             color: #f00;
@@ -98,9 +117,15 @@ st.markdown(
         <span class="stripe-green"></span>
     </div>
     <div class="chatbot-header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Kenya.svg/1200px-Flag_of_Kenya.svg.png" alt="Kenya flag">
+        <div class="kenya-flag" role="img" aria-label="Kenya flag">
+            <span class="flag-black"></span><span class="flag-white"></span><span class="flag-red"></span><span class="flag-white"></span><span class="flag-green"></span>
+            <span class="flag-shield"></span>
+        </div>
         <h1>Kenyan Constitution Chatbot</h1>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Kenya.svg/1200px-Flag_of_Kenya.svg.png" alt="Kenya flag">
+        <div class="kenya-flag" role="img" aria-label="Kenya flag">
+            <span class="flag-black"></span><span class="flag-white"></span><span class="flag-red"></span><span class="flag-white"></span><span class="flag-green"></span>
+            <span class="flag-shield"></span>
+        </div>
     </div>
     """,
     unsafe_allow_html=True,
