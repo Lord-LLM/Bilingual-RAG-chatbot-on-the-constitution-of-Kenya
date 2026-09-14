@@ -3,6 +3,7 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
+import asyncio
 import os
 import nest_asyncio
 import uvicorn
@@ -90,4 +91,4 @@ if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))
     uvicorn_config = uvicorn.Config(app, host="0.0.0.0", port=port, reload=True)
     server = uvicorn.Server(uvicorn_config)
-    await server.serve()
+    asyncio.run(server.serve())
