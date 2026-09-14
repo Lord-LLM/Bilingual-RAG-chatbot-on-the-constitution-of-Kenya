@@ -10,9 +10,6 @@ st.set_page_config(
     layout="centered",
 )
 
-# ----------------------------------------------------------------------------
-# Styling
-# ----------------------------------------------------------------------------
 st.markdown(
     """
     <style>
@@ -161,9 +158,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ----------------------------------------------------------------------------
-# Backend helpers
-# ----------------------------------------------------------------------------
 def get_api_key():
     try:
         return st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
@@ -193,9 +187,6 @@ def detect_language_label(text: str) -> str | None:
     return labels.get(code, code)
 
 
-# ----------------------------------------------------------------------------
-# Sidebar controls
-# ----------------------------------------------------------------------------
 with st.sidebar:
     st.markdown("### Settings")
     language = st.selectbox("Answer language", ["English", "Swahili"])
@@ -211,11 +202,8 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
-# ----------------------------------------------------------------------------
-# Chat state + history
-# ----------------------------------------------------------------------------
 if "messages" not in st.session_state:
-    st.session_state.messages = []  # list of {"role", "content", "badge"}
+    st.session_state.messages = []
 
 if not st.session_state.messages:
     st.markdown(
@@ -231,9 +219,6 @@ for message in st.session_state.messages:
         if message.get("badge"):
             st.markdown(f'<span class="badge">{message["badge"]}</span>', unsafe_allow_html=True)
 
-# ----------------------------------------------------------------------------
-# Chat input
-# ----------------------------------------------------------------------------
 question = st.chat_input("Ask about the Constitution of Kenya...")
 
 if question:
@@ -262,8 +247,6 @@ if question:
                 current_step = "generating the answer"
                 answer = generate_response(question, context, language)
 
-            # Rendered as Markdown so headings, bold text, lists and links
-            # from the model's response display correctly instead of raw text.
             placeholder.markdown(answer)
             st.markdown(f'<span class="badge">answered in {language}</span>', unsafe_allow_html=True)
             st.session_state.messages.append(
