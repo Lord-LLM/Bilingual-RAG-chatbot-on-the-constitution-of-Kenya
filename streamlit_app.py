@@ -53,6 +53,7 @@ st.markdown(
         .kenya-flag {
             display: flex;
             flex-direction: column;
+            position: relative;
             width: 70px;
             height: 46px;
             border: 1px solid #626660;
@@ -61,7 +62,7 @@ st.markdown(
             overflow: hidden;
             box-shadow: 0 5px 18px #0008;
         }
-        .kenya-flag span {
+        .kenya-flag > span:not(.flag-shield) {
             flex: 1;
         }
         .flag-black { background: #000; }
@@ -69,13 +70,15 @@ st.markdown(
         .flag-red { background: #f00; }
         .flag-green { background: green; }
         .flag-shield {
-            position: relative;
-            margin: -17px auto;
+            position: absolute;
+            left: 50%;
+            top: 50%;
             width: 11px;
             height: 34px;
             background: var(--red);
             border: 2px solid #080808;
             border-radius: 50%;
+            transform: translate(-50%, -50%);
         }
         .chatbot-header h1 {
             color: var(--ink);

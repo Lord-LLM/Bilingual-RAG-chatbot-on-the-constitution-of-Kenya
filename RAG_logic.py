@@ -1,5 +1,6 @@
 # Importing libraries
 import os
+import shutil
 import warnings
 import pdfplumber
 import spacy
@@ -30,10 +31,24 @@ nlp = spacy.load("en_core_web_sm")
 embedder = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Initialize ChromaDB client for persistent vector storage
-chroma_client = chromadb.PersistentClient(path="./chroma_db")
+CHROMA_PATH = os.path.join(os.path.dirname(__file__), "chroma_db")
 
-# Create or get a collection named "constitution" in ChromaDB
-collection = chroma_client.get_or_create_collection(name="constitution")
+
+def load_collection():
+    client = chromadb.PersistentClient(path=CHROMA_PATH)
+    try:
+        return client, client.get_or_create_collection(name="constitution")
+    except (KeyError, ValueError) as error:
+        warnings.warn(
+            f"Resetting incompatible ChromaDB data ({error}).",
+            RuntimeWarning,
+        )
+        shutil.rmtree(CHROMA_PATH, ignore_errors=True)
+        client = chromadb.PersistentClient(path=CHROMA_PATH)
+        return client, client.get_or_create_collection(name="constitution")
+
+
+chroma_client, collection = load_collection()
 
 # Define the path to the Constitution PDF using a relative path
 PDF_PATH = os.path.join(os.path.dirname(__file__), "COK.pdf")
