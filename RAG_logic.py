@@ -1,6 +1,6 @@
 # Importing libraries
 import os
-import shutil
+import tempfile
 import warnings
 import pdfplumber
 import spacy
@@ -30,22 +30,13 @@ nlp = spacy.load("en_core_web_sm")
 # Initialize SentenceTransformer for generating text embeddings
 embedder = SentenceTransformer('all-MiniLM-L6-v2')
 
-# Initialize ChromaDB client for persistent vector storage
-CHROMA_PATH = os.path.join(os.path.dirname(__file__), "chroma_db")
+# Use a fresh process-local index instead of the legacy database committed to the repo.
+CHROMA_PATH = tempfile.mkdtemp(prefix="kenya_constitution_chroma_")
 
 
 def load_collection():
     client = chromadb.PersistentClient(path=CHROMA_PATH)
-    try:
-        return client, client.get_or_create_collection(name="constitution")
-    except (KeyError, ValueError) as error:
-        warnings.warn(
-            f"Resetting incompatible ChromaDB data ({error}).",
-            RuntimeWarning,
-        )
-        shutil.rmtree(CHROMA_PATH, ignore_errors=True)
-        client = chromadb.PersistentClient(path=CHROMA_PATH)
-        return client, client.get_or_create_collection(name="constitution")
+    return client, client.get_or_create_collection(name="constitution")
 
 
 chroma_client, collection = load_collection()

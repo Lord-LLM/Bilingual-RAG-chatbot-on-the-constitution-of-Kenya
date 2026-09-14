@@ -211,7 +211,7 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-st.markdown('<div class="eyebrow">Constitutional research assistant</div>', unsafe_allow_html=True)
+st.markdown('<div class="eyebrow">Constitutional  assistant</div>', unsafe_allow_html=True)
 st.markdown(
     '<p class="intro">Grounded answers from the Constitution of Kenya, in English or Swahili.</p>',
     unsafe_allow_html=True,
