@@ -20,6 +20,7 @@ load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY not found in .env file")
+GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 
 # Initialize the Groq client for generating responses
 groq_client = Groq(api_key=GROQ_API_KEY)
@@ -114,7 +115,7 @@ def generate_response(query, context):
             {"role": "system", "content": "You are a knowledgeable legal assistant."},
             {"role": "user", "content": prompt}
         ],
-        model="llama-3.3-70b-versatile",
+        model=GROQ_MODEL,
         max_tokens=500
     )
     return response.choices[0].message.content
