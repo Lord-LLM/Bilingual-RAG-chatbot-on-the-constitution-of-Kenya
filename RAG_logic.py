@@ -20,7 +20,7 @@ load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY not found in .env file")
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 
 # Initialize the Groq client for generating responses
 groq_client = Groq(api_key=GROQ_API_KEY)
@@ -118,7 +118,10 @@ def generate_response(query, context, response_language="English"):
             {"role": "user", "content": prompt}
         ],
         model=GROQ_MODEL,
-        max_tokens=500
+        temperature=1,
+        max_completion_tokens=2048,
+        top_p=1,
+        reasoning_effort="medium",
     )
     return response.choices[0].message.content
 
